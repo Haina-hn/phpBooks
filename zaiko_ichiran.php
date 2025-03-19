@@ -16,11 +16,22 @@ session_start();
 if (/* ②の処理を書く */){
 	//③SESSIONの「error2」に「ログインしてください」と設定する。
 	//④ログイン画面へ遷移する。
+		header("Location: home.php"); 
+		exit()
 }
 
 //⑤データベースへ接続し、接続情報を変数に保存する
-
+try{
+	$db = new PDO('mysql:dbname=mydb;host=127.0.0.1','root','');
+} catch (PDOException $e){
+	echo'DB連接できません：' . $e->getMessage();
+}
 //⑥データベースで使用する文字コードを「UTF8」にする
+
+$mysqli->set_charset("utf8");
+
+echo "データベース接続成功！";
+
 
 //⑦書籍テーブルから書籍情報を取得するSQLを実行する。また実行結果を変数に保存する
 $sql = "SELECT * FROM books";
