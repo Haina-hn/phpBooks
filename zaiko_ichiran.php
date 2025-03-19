@@ -46,7 +46,7 @@ $sql = "SELECT * FROM books";
 // $result = $pdo->query($sql);
 $stmt = $dbh->prepare($sql);
 $stmt ->execute();
-$books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// $books = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -107,22 +107,22 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					<tbody>
 						<?php
 						//⑩SQLの実行結果の変数から1レコードのデータを取り出す。レコードがない場合はループを終了する。
-						$hasData = false;
-						while($books = $stmt->fetch(PDO::FETCH_ASSOC)){
-							//⑪extract変数を使用し、1レコードのデータを渡す。
-							extract($book);
-							echo "<tr id='books'>";
-							echo "<td id='check'><input type='checkbox' name='books[]'value='$id'></td>";//⑫番号
+						$counter = 0;
+						while ($books = $stmt->fetch(PDO::FETCH_ASSOC)) {
+							// ⑪ extract() を使用して 1 レコードのデータを変数化
+							extract($books);
+						
+							echo "<tr id='book'>";
+							echo "<td id='check'><input type='checkbox' name='books[]' value='$id'></td>"; //⑫番号
 							echo "<td id='id'>$id</td>";
 							echo "<td id='title'>$title</td>";
 							echo "<td id='author'>$author</td>";
 							echo "<td id='date'>$salesDate</td>";
 							echo "<td id='price'>$price</td>";
 							echo "<td id='stock'>$stock</td>";
-							echo "</tr>";
-						}
-						if (!$hasData) {
-							echo "<tr><td colspan='7'>データがありません。</td></tr>";
+							echo"</tr>";
+							
+							if(++$counter >= 25) break;
 						}
 						?>
 					</tbody>
