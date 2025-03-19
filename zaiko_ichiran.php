@@ -13,25 +13,34 @@
 //①セッションを開始する
 session_start();
 //②SESSIONの「login」フラグがfalseか判定する。「login」フラグがfalseの場合はif文の中に入る。
-if ($_SESSION["login"] == false){
+if (!isset($_SESSION['login']) || $_SESSION["login"] == false){
 	//③SESSIONの「error2」に「ログインしてください」と設定する。
+	$_SESSION["error2"] = "ログインしてください";
 	//④ログイン画面へ遷移する。
 		header("Location: home.php"); 
-		exit()
+		exit();
 }
 
 //⑤データベースへ接続し、接続情報を変数に保存する
+$dsn = 'mysql:host=localhost;dbname=mydb;charset=utf8';
+$user = 'root';
+$password = '';
 try{
-	$db = new PDO('mysql:dbname=mydb;host=127.0.0.1','root','');
+	$dbh = new PDO($dsn, $user, $password);
 } catch (PDOException $e){
-	echo'DB連接できません：' . $e->getMessage();
+	echo 'データベースに接続できません！' . $e->getMessage();
+	exit;
 }
+// try{
+// 	$db = new PDO('mysql:dbname=mydb;host=127.0.0.1','root','');
+// } catch (PDOException $e){
+// 	echo'DB連接できません：' . $e->getMessage();
+// }
 //⑥データベースで使用する文字コードを「UTF8」にする
 
-$mysqli->set_charset("utf8");
-
-echo "データベース接続成功！";
-
+// $mysqli->set_charset("utf8");
+// echo "データベース接続成功！";
+$dbh->query('SET NAMES utf8');
 
 //⑦書籍テーブルから書籍情報を取得するSQLを実行する。また実行結果を変数に保存する
 $sql = "SELECT * FROM books";
