@@ -13,7 +13,7 @@
 //①セッションを開始する
 session_start();
 //②SESSIONの「login」フラグがfalseか判定する。「login」フラグがfalseの場合はif文の中に入る。
-if (/* ②の処理を書く */){
+if ($_SESSION["login"] == false){
 	//③SESSIONの「error2」に「ログインしてください」と設定する。
 	//④ログイン画面へ遷移する。
 }
