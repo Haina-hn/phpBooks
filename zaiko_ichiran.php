@@ -15,6 +15,7 @@ session_start();
 //②SESSIONの「login」フラグがfalseか判定する。「login」フラグがfalseの場合はif文の中に入る。
 if (!isset($_SESSION['login']) || $_SESSION["login"] == false){
 	//③SESSIONの「error2」に「ログインしてください」と設定する。
+	$_SESSION["error2"] = "ログインしてください";
 	//④ログイン画面へ遷移する。
 		header("Location: home.php"); 
 		exit();
@@ -106,11 +107,11 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					<tbody>
 						<?php
 						//⑩SQLの実行結果の変数から1レコードのデータを取り出す。レコードがない場合はループを終了する。
-						while(/* ⑩の処理を書く */){
+						while($books = $result->fetch(PDO::FETCH_ASSOC)){
 							//⑪extract変数を使用し、1レコードのデータを渡す。
-
+							extract($book);
 							echo "<tr id='book'>";
-							echo "<td id='check'><input type='checkbox' name='books[]'value="./* ⑫IDを設定する */."></td>";
+							echo "<td id='check'><input type='checkbox' name='books[]'value='$id'></td>";//⑫番号
 							echo "<td id='id'>/* ⑬IDを表示する */</td>";
 							echo "<td id='title'>/* ⑭titleを表示する */</td>";
 							echo "<td id='author'>/* ⑮authorを表示する */</td>";
