@@ -11,7 +11,7 @@
 */
 
 //①セッションを開始する
-
+session_start();
 //②SESSIONの「login」フラグがfalseか判定する。「login」フラグがfalseの場合はif文の中に入る。
 if (/* ②の処理を書く */){
 	//③SESSIONの「error2」に「ログインしてください」と設定する。
