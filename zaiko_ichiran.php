@@ -23,6 +23,10 @@ if (/* ②の処理を書く */){
 //⑥データベースで使用する文字コードを「UTF8」にする
 
 //⑦書籍テーブルから書籍情報を取得するSQLを実行する。また実行結果を変数に保存する
+$sql = "SELECT * FROM books";
+$result = $pdo->query($sql);
+$stmt ->execute();
+$books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -44,8 +48,10 @@ if (/* ②の処理を書く */){
 				 * ⑧SESSIONの「success」にメッセージが設定されているかを判定する。
 				 * 設定されていた場合はif文の中に入る。
 				 */ 
-				if(/* ⑧の処理を書く */){
+				if(isset($_SESSION["success"])) {
 					//⑨SESSIONの「success」の中身を表示する。
+					echo $_SESSION["success"];
+					unset($_SESSION["success"]);
 				}
 				?>
 			</div>
