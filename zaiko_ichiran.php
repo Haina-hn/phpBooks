@@ -13,41 +13,30 @@
 //①セッションを開始する
 session_start();
 //②SESSIONの「login」フラグがfalseか判定する。「login」フラグがfalseの場合はif文の中に入る。
-if (!isset($_SESSION['login']) || $_SESSION["login"] == false){
+if (empty($_SESSION['login']) || $_SESSION['login'] === false) {
 	//③SESSIONの「error2」に「ログインしてください」と設定する。
-	$_SESSION["error2"] = 'ログインしてください';
+	$_SESSION['error2'] = 'ログインしてください';
 	//④ログイン画面へ遷移する。
-		header("Location: login.php"); 
-		exit();
-}
-
-//⑤データベースへ接続し、接続情報を変数に保存する
-$dsn = 'mysql:host=localhost;dbname=phpbooks;charset=utf8';
-$user = 'root';
-$password = '';
-try{
-	$dbh = new PDO($dsn, $user, $password);
-} catch (PDOException $e){
-	echo 'データベースに接続できません！' . $e->getMessage();
+	header("Location: login.php");
 	exit;
-}
-// try{
-// 	$db = new PDO('mysql:dbname=mydb;host=127.0.0.1','root','');
-// } catch (PDOException $e){
-// 	echo'DB連接できません：' . $e->getMessage();
-// }
-//⑥データベースで使用する文字コードを「UTF8」にする
-
-// $mysqli->set_charset("utf8");
-// echo "データベース接続成功！";
-$dbh->query('SET NAMES utf8');
-//⑦書籍テーブルから書籍情報を取得するSQLを実行する。また実行結果を変数に保存する
-$sql = "SELECT * FROM books";
-// $result = $pdo->query($sql);
-$stmt = $dbh->prepare($sql);
-$stmt ->execute();
-$books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}	
+//⑤データベースへ接続し、接続情報を変数に保存する
+$con = mysqli_connect("localhost", "root", "", "phpbooks") or die("接続失敗: " . mysqli_connect_error());
+$sql = "SELECT DISTINCT id, title, author, salesDate, price, stock FROM books";
+$rst = mysqli_query($con, $sql) or die("select失敗: " . mysqli_error($con));
 ?>
+<!-- //⑥データベースで使用する文字コードを「UTF8」にする
+	$dbh->exec("SET NAMES utf8");
+
+//⑦書籍テーブルから書籍情報を取得するSQLを実行する。また実行結果を変数に保存する
+	$sql = "SELECT * FROM books";
+	$stmt = $dbh->prepare($sql);
+	$stmt->execute();
+} catch (PDOException $e) {
+	echo "データベースエラー: " . $e->getMessage();
+	exit();
+}
+?> -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -66,12 +55,13 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				<?php
 				/*
 				 * ⑧SESSIONの「success」にメッセージが設定されているかを判定する。
+				 * 
 				 * 設定されていた場合はif文の中に入る。
 				 */ 
-				if(isset($_SESSION["success"])) {
+                if (!empty($_SESSION['success'])) {
 					//⑨SESSIONの「success」の中身を表示する。
-					echo $_SESSION["success"];
-					unset($_SESSION["success"]);
+					echo $_SESSION['success'];
+                    unset($_SESSION['success']); // 表示後に削除
 				}
 				?>
 			</div>
@@ -81,7 +71,7 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				<p id="ninsyou_ippan">
 					<?php
 						echo @$_SESSION["account_name"];
-					?><br>
+					?><br>	
 					<button type="button" id="logout" onclick="location.href='logout.php'">ログアウト</button>
 				</p>
 				<button type="submit" id="btn1" formmethod="POST" name="decision" value="3" formaction="nyuka.php">入荷</button>
@@ -107,22 +97,17 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					<tbody>
 						<?php
 						//⑩SQLの実行結果の変数から1レコードのデータを取り出す。レコードがない場合はループを終了する。
-						$hasData = false;
-						while($books = $stmt->fetch(PDO::FETCH_ASSOC)){
-							//⑪extract変数を使用し、1レコードのデータを渡す。
-							extract($book);
-							echo "<tr id='books'>";
-							echo "<td id='check'><input type='checkbox' name='books[]'value='$id'></td>";//⑫番号
-							echo "<td id='id'>$id</td>";
-							echo "<td id='title'>$title</td>";
-							echo "<td id='author'>$author</td>";
-							echo "<td id='date'>$salesDate</td>";
-							echo "<td id='price'>$price</td>";
-							echo "<td id='stock'>$stock</td>";
+						while ($data = mysqli_fetch_array($rst)) {
+							extract($data); 
+							echo "<tr id='book'>";
+							echo "<td id='check'><input type='checkbox' name='books[]' value='" . htmlspecialchars($id) . "'></td>";
+							echo "<td id='id'>" . htmlspecialchars($id) . "</td>";
+							echo "<td id='title'>" . htmlspecialchars($title) . "</td>";
+							echo "<td id='author'>" . htmlspecialchars($author) . "</td>";
+							echo "<td id='date'>" . htmlspecialchars($salesDate) . "</td>";
+							echo "<td id='price'>" . htmlspecialchars($price) . "</td>";
+							echo "<td id='stock'>" . htmlspecialchars($stock) . "</td>";
 							echo "</tr>";
-						}
-						if (!$hasData) {
-							echo "<tr><td colspan='7'>データがありません。</td></tr>";
 						}
 						?>
 					</tbody>
