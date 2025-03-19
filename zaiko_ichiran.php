@@ -21,7 +21,7 @@ if (!isset($_SESSION['login']) || $_SESSION["login"] == false){
 }
 
 //⑤データベースへ接続し、接続情報を変数に保存する
-$dsn = 'mysql:host=localhost;dbname=mydb;charset=utf8';
+$dsn = 'mysql:host=localhost;dbname=phpbooks;charset=utf8';
 $user = 'root';
 $password = '';
 try{
