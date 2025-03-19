@@ -15,9 +15,8 @@ session_start();
 //②SESSIONの「login」フラグがfalseか判定する。「login」フラグがfalseの場合はif文の中に入る。
 if (!isset($_SESSION['login']) || $_SESSION["login"] == false){
 	//③SESSIONの「error2」に「ログインしてください」と設定する。
-	$_SESSION["error2"] = "ログインしてください";
 	//④ログイン画面へ遷移する。
-		header("Location: home.php"); 
+		header("Location: login.php"); 
 		exit();
 }
 
@@ -112,12 +111,13 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 							extract($book);
 							echo "<tr id='book'>";
 							echo "<td id='check'><input type='checkbox' name='books[]'value='$id'></td>";//⑫番号
-							echo "<td id='id'>$id</td>";
-							echo "<td id='title'>$title</td>";
-							echo "<td id='author'>$author</td>";
-							echo "<td id='date'>$salesDate</td>";
-							echo "<td id='price'>$price</td>";
-							echo "<td id='stock'>$stock</td>";
+							echo "<td id='id'>{$book['ID']}</td>";//⑬IDを表示する
+							echo "<td id='title'>/* ⑭titleを表示する */</td>";
+							echo "<td id='author'>/* ⑮authorを表示する */</td>";
+							echo "<td id='date'>/* ⑯salesDateを表示する */</td>";
+							echo "<td id='price'>/* ⑰priceを表示する */</td>";
+							echo "<td id='stock'>/* ⑱stockを表示する */</td>";
+
 							echo "</tr>";
 						}
 						?>
