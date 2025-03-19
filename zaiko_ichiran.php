@@ -41,10 +41,10 @@ try{
 // $mysqli->set_charset("utf8");
 // echo "データベース接続成功！";
 $dbh->query('SET NAMES utf8');
-
 //⑦書籍テーブルから書籍情報を取得するSQLを実行する。また実行結果を変数に保存する
 $sql = "SELECT * FROM books";
-$result = $pdo->query($sql);
+// $result = $pdo->query($sql);
+$stmt = $dbh->prepare($sql);
 $stmt ->execute();
 $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -107,10 +107,11 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					<tbody>
 						<?php
 						//⑩SQLの実行結果の変数から1レコードのデータを取り出す。レコードがない場合はループを終了する。
-						while($books = $result->fetch(PDO::FETCH_ASSOC)){
+						$hasData = false;
+						while($books = $stmt->fetch(PDO::FETCH_ASSOC)){
 							//⑪extract変数を使用し、1レコードのデータを渡す。
 							extract($book);
-							echo "<tr id='book'>";
+							echo "<tr id='books'>";
 							echo "<td id='check'><input type='checkbox' name='books[]'value='$id'></td>";//⑫番号
 							echo "<td id='id'>$id</td>";
 							echo "<td id='title'>$title</td>";
@@ -119,6 +120,9 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 							echo "<td id='price'>$price</td>";
 							echo "<td id='stock'>$stock</td>";
 							echo "</tr>";
+						}
+						if (!$hasData) {
+							echo "<tr><td colspan='7'>データがありません。</td></tr>";
 						}
 						?>
 					</tbody>
