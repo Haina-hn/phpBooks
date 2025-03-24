@@ -21,7 +21,7 @@ function getByid($id,$con){
 	$stmt ->bindParam(':id',$id,PDO::PARAM_INT);
 	$stmt -> execute();
 	//③実行した結果から1レコード取得し、returnで値を返す。
-	return $stmt->fetch(PDo::FETCH_ASSOC);
+	return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 function updateByid($id,$con,$total){
