@@ -100,17 +100,17 @@ foreach($_POST['books'] as $booksId/* ⑪の処理を書く */){
  */
 if(isset($_POST['add']) && $_POST['add'] === 'ok' ){/* ㉓の処理を書く */
 	//㉔書籍数をカウントするための変数を宣言し、値を0で初期化する。
-	$book_count2 = 0;
+	$book_count = 0;
 	//㉕POSTの「books」から値を取得し、変数に設定する。
 	foreach($_POST['books'] as $value){/* ㉕の処理を書く */
 		//㉖「getByid」関数を呼び出し、変数に戻り値を入れる。その際引数に㉕の処理で取得した値と⑧のDBの接続情報を渡す。
-		$book2 = getByid($booksId, $dbh);
+		$book1 = getByid($booksId, $dbh);
 		//㉗ ㉖で取得した書籍の情報の「stock」と、㉔の変数を元にPOSTの「stock」から値を取り出し、足した値を変数に保存する。
-		$newStock2 = $book2['stock'] + $_POST['stock'][$book_count2];
+		$newStock1 = $book1['stock'] + $_POST['stock'][$book_count];
 		//㉘「updateByid」関数を呼び出す。その際に引数に㉕の処理で取得した値と⑧のDBの接続情報と㉗で計算した値を渡す。
-		updateByid($booksId, $bdh, $newStock2);
+		updateByid($booksId, $bdh, $newStock1);
 		//㉙ ㉔で宣言した変数をインクリメントで値を1増やす。
-		$book_count2++;
+		$book_count++;
 	}
 
 	//㉚SESSIONの「success」に「入荷が完了しました」と設定する。
@@ -149,7 +149,19 @@ if(isset($_POST['add']) && $_POST['add'] === 'ok' ){/* ㉓の処理を書く */
 						//㉜書籍数をカウントするための変数を宣言し、値を0で初期化する。
 
 						//㉝POSTの「books」から値を取得し、変数に設定する。
-						
+						foreach(/* ㉝の処理を書く */){
+							//㉞「getByid」関数を呼び出し、変数に戻り値を入れる。その際引数に㉜の処理で取得した値と⑧のDBの接続情報を渡す。
+						?>
+						<tr>
+							<td><?php echo	/* ㉟ ㉞で取得した書籍情報からtitleを表示する。 */;?></td>
+							<td><?php echo	/* ㊱ ㉞で取得した書籍情報からstockを表示する。 */;?></td>
+							<td><?php echo	/* ㊱ POSTの「stock」に設定されている値を㉜の変数を使用して呼び出す。 */;?></td>
+						</tr>
+						<input type="hidden" name="books[]" value="<?php echo /* ㊲ ㉝で取得した値を設定する */; ?>">
+						<input type="hidden" name="stock[]" value='<?php echo /* ㊳POSTの「stock」に設定されている値を㉜の変数を使用して設定する。 */;?>'>
+						<?php
+							//㊴ ㉜で宣言した変数をインクリメントで値を1増やす。
+						}
 						?>
 					</tbody>
 				</table>
