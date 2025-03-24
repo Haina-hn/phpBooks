@@ -9,15 +9,19 @@
 */
 
 //①セッションを開始する
-
+session_start();
 function getByid($id,$con){
 	/* 
 	 * ②書籍を取得するSQLを作成する実行する。
 	 * その際にWHERE句でメソッドの引数の$idに一致する書籍のみ取得する。
 	 * SQLの実行結果を変数に保存する。
 	 */
-
+	$sql = "SELECT * FROM books WHERE id = :id;";
+	$stmt = $con->prepare($sql);
+	$stmt ->bindParam(':id',$id,PDO::PARAM_INT);
+	$stmt -> execute();
 	//③実行した結果から1レコード取得し、returnで値を返す。
+	return $stmt->fetch(PDo::FETCH_ASSOC);
 }
 
 function updateByid($id,$con,$total){
@@ -26,10 +30,20 @@ function updateByid($id,$con,$total){
 	 * 引数で受け取った$totalの値で在庫数を上書く。
 	 * その際にWHERE句でメソッドの引数に$idに一致する書籍のみ取得する。
 	 */
+	$sql = "UPDATE books SET stock = :total WHERE id = :id;";
+
+    $stmt = $con->prepare($sql);
+    $stmt->bindParam(':total', $total, PDO::PARAM_INT);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
 }
 
 //⑤SESSIONの「login」フラグがfalseか判定する。「login」フラグがfalseの場合はif文の中に入る。
 if (/* ⑤の処理を書く */){
+	$_SESSION['error2'] == 'ログインしてください';//⑥SESSIONの「error2」に「ログインしてください」と設定する。
+	header("Location: login.php");//⑦ログイン画面へ遷移する。
+	exit();
+if (!isset($_SESSION['login']) || $_SESSION['login'] === false/* ⑤の処理を書く */){
 	$_SESSION['error2'] == 'ログインしてください';//⑥SESSIONの「error2」に「ログインしてください」と設定する。
 	header("Location: login.php");//⑦ログイン画面へ遷移する。
 	exit();
@@ -51,16 +65,19 @@ $dbn->set-charset('utf8');
 //⑩書籍数をカウントするための変数を宣言し、値を0で初期化する
 $book_count = 0;
 //⑪POSTの「books」から値を取得し、変数に設定する。
-foreach(/* ⑪の処理を書く */){
+foreach($_POST['books'] as $booksId/* ⑪の処理を書く */){
 	/*
 	 * ⑫POSTの「stock」について⑩の変数の値を使用して値を取り出す。
 	 * 半角数字以外の文字が設定されていないかを「is_numeric」関数を使用して確認する。
 	 * 半角数字以外の文字が入っていた場合はif文の中に入る。
 	 */
-	if (/* ⑫の処理を書く */) {
+	if (!is_numeric($_POST['stock'][$counter])/* ⑫の処理を書く */) {
 		//⑬SESSIONの「error」に「数値以外が入力されています」と設定する。
+		$_SESSION['error'] = '数値以外が入力されています';
 		//⑭「include」を使用して「nyuka.php」を呼び出す。
+		include 'nyuka.php';
 		//⑮「exit」関数で処理を終了する。
+		exit();
 	}
 
 	//⑯「getByid」関数を呼び出し、変数に戻り値を入れる。その際引数に⑪の処理で取得した値と⑧のDBの接続情報を渡す。
