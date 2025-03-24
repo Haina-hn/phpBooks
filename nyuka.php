@@ -14,14 +14,14 @@
  * ①session_status()の結果が「PHP_SESSION_NONE」と一致するか判定する。
  * 一致した場合はif文の中に入る。
  */
-if (/* ①.の処理を行う */) {
-	//②セッションを開始する
+if (session_status() == PHP_SESSION_NONE) {/* ①.の処理を行う */
+	session_start();//②セッションを開始する
 }
 
 
 //③SESSIONの「login」フラグがfalseか判定する。「login」フラグがfalseの場合はif文の中に入る。
-if (/* ③の処理を書く */){
-	//④SESSIONの「error2」に「ログインしてください」と設定する。
+if (!isset($_SESSION['login']) || $_SESSION['login'] == false){/* ③の処理を書く */
+	$_SESSION['error2'] == 'ログインしてください';//④SESSIONの「error2」に「ログインしてください」と設定する。
 	//⑤ログイン画面へ遷移する。
 }
 
