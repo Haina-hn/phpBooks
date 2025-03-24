@@ -19,31 +19,32 @@ if (empty($_SESSION['login']) || $_SESSION['login'] === false) {
 	//④ログイン画面へ遷移する。
 	header("Location: login.php");
 	exit;
-}	
+}
 //⑤データベースへ接続し、接続情報を変数に保存する
 $con = mysqli_connect("localhost", "root", "", "phpbooks") or die("接続失敗: " . mysqli_connect_error());
-$sql = "SELECT DISTINCT id, title, author, salesDate, price, stock FROM books";
+$sql = "SELECT * FROM books";
 $rst = mysqli_query($con, $sql) or die("select失敗: " . mysqli_error($con));
-?>
-<!-- //⑥データベースで使用する文字コードを「UTF8」にする
-	$dbh->exec("SET NAMES utf8");
 
-//⑦書籍テーブルから書籍情報を取得するSQLを実行する。また実行結果を変数に保存する
+//⑥データベースで使用する文字コードを「UTF8」にする
+mysqli_set_charset($con, "utf8");
+?>
+<!-- //⑦書籍テーブルから書籍情報を取得するSQLを実行する。また実行結果を変数に保存する
 	$sql = "SELECT * FROM books";
 	$stmt = $dbh->prepare($sql);
 	$stmt->execute();
-} catch (PDOException $e) {
+ catch (PDOException $e) {
 	echo "データベースエラー: " . $e->getMessage();
 	exit();
-}
-?> -->
+ -->
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
 	<meta charset="UTF-8">
 	<title>書籍一覧</title>
 	<link rel="stylesheet" href="css/ichiran.css" type="text/css" />
 </head>
+
 <body>
 	<div id="header">
 		<h1>書籍一覧</h1>
@@ -57,21 +58,22 @@ $rst = mysqli_query($con, $sql) or die("select失敗: " . mysqli_error($con));
 				 * ⑧SESSIONの「success」にメッセージが設定されているかを判定する。
 				 * 
 				 * 設定されていた場合はif文の中に入る。
-				 */ 
-                if (!empty($_SESSION['success'])) {
+				 */
+				if (!empty($_SESSION['success'])) {
 					//⑨SESSIONの「success」の中身を表示する。
 					echo $_SESSION['success'];
-                    unset($_SESSION['success']); // 表示後に削除
+					unset($_SESSION['success']); // 表示後に削除
 				}
 				?>
+
 			</div>
-			
+
 			<!-- 左メニュー -->
 			<div id="left">
 				<p id="ninsyou_ippan">
 					<?php
-						echo @$_SESSION["account_name"];
-					?><br>	
+					echo @$_SESSION["account_name"];
+					?><br>
 					<button type="button" id="logout" onclick="location.href='logout.php'">ログアウト</button>
 				</p>
 				<button type="submit" id="btn1" formmethod="POST" name="decision" value="3" formaction="nyuka.php">入荷</button>
@@ -98,7 +100,10 @@ $rst = mysqli_query($con, $sql) or die("select失敗: " . mysqli_error($con));
 						<?php
 						//⑩SQLの実行結果の変数から1レコードのデータを取り出す。レコードがない場合はループを終了する。
 						while ($data = mysqli_fetch_array($rst)) {
-							extract($data); 
+							if ($data === false) {
+								break;
+							}
+							extract($data);
 							echo "<tr id='book'>";
 							echo "<td id='check'><input type='checkbox' name='books[]' value='" . htmlspecialchars($id) . "'></td>";
 							echo "<td id='id'>" . htmlspecialchars($id) . "</td>";
@@ -119,4 +124,5 @@ $rst = mysqli_query($con, $sql) or die("select失敗: " . mysqli_error($con));
 		<footer>株式会社アクロイト</footer>
 	</div>
 </body>
+
 </html>
