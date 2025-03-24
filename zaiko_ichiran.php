@@ -13,14 +13,13 @@
 //①セッションを開始する
 session_start();
 //②SESSIONの「login」フラグがfalseか判定する。「login」フラグがfalseの場合はif文の中に入る。
-if (!isset($_SESSION['login']) || $_SESSION["login"] == false){
+if (empty($_SESSION['login']) || $_SESSION['login'] === false) {
 	//③SESSIONの「error2」に「ログインしてください」と設定する。
-	$_SESSION["error2"] = 'ログインしてください';
+	$_SESSION['error2'] = 'ログインしてください';
 	//④ログイン画面へ遷移する。
-		header("Location: login.php"); 
-		exit();
+	header("Location: login.php");
+	exit();
 }
-
 //⑤データベースへ接続し、接続情報を変数に保存する
 $dsn = 'mysql:host=localhost;dbname=phpbooks;charset=utf8';
 $user = 'root';
@@ -31,23 +30,31 @@ try{
 	echo 'データベースに接続できません！' . $e->getMessage();
 	exit;
 }
-// try{
-// 	$db = new PDO('mysql:dbname=mydb;host=127.0.0.1','root','');
-// } catch (PDOException $e){
-// 	echo'DB連接できません：' . $e->getMessage();
-// }
+
 //⑥データベースで使用する文字コードを「UTF8」にする
 
 // $mysqli->set_charset("utf8");
 // echo "データベース接続成功！";
-$dbh->query('SET NAMES utf8');
+// $dbh->query('SET NAMES utf8');
 //⑦書籍テーブルから書籍情報を取得するSQLを実行する。また実行結果を変数に保存する
 $sql = "SELECT * FROM books";
 // $result = $pdo->query($sql);
 $stmt = $dbh->prepare($sql);
 $stmt ->execute();
-// $books = $stmt->fetch(PDO::FETCH_ASSOC);
-?>
+$books = $stmt->fetch(PDO::FETCH_ASSOC);
+
+//⑥データベースで使用する文字コードを「UTF8」にする -->
+$dbh->exec("SET NAMES utf8");
+
+//⑦書籍テーブルから書籍情報を取得するSQLを実行する。また実行結果を変数に保存する
+	$sql = "SELECT * FROM books";
+	$stmt = $dbh->prepare($sql);
+	$stmt->execute();
+// } catch (PDOException $e) {
+// 	echo "データベースエラー: " . $e->getMessage();
+// 	exit();
+// }
+?> 
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -66,12 +73,13 @@ $stmt ->execute();
 				<?php
 				/*
 				 * ⑧SESSIONの「success」にメッセージが設定されているかを判定する。
+				 * 
 				 * 設定されていた場合はif文の中に入る。
 				 */ 
-				if(isset($_SESSION["success"])) {
+                if (!empty($_SESSION['success'])) {
 					//⑨SESSIONの「success」の中身を表示する。
-					echo $_SESSION["success"];
-					unset($_SESSION["success"]);
+					echo $_SESSION['success'];
+                    unset($_SESSION['success']); // 表示後に削除
 				}
 				?>
 			</div>
@@ -81,7 +89,7 @@ $stmt ->execute();
 				<p id="ninsyou_ippan">
 					<?php
 						echo @$_SESSION["account_name"];
-					?><br>
+					?><br>	
 					<button type="button" id="logout" onclick="location.href='logout.php'">ログアウト</button>
 				</p>
 				<button type="submit" id="btn1" formmethod="POST" name="decision" value="3" formaction="nyuka.php">入荷</button>
@@ -123,6 +131,7 @@ $stmt ->execute();
 							echo"</tr>";
 							
 							if(++$counter >= 25) break;
+
 						}
 						?>
 					</tbody>
