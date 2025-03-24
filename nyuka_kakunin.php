@@ -30,16 +30,26 @@ function updateByid($id,$con,$total){
 
 //⑤SESSIONの「login」フラグがfalseか判定する。「login」フラグがfalseの場合はif文の中に入る。
 if (/* ⑤の処理を書く */){
-	//⑥SESSIONの「error2」に「ログインしてください」と設定する。
-	//⑦ログイン画面へ遷移する。
+	$_SESSION['error2'] == 'ログインしてください';//⑥SESSIONの「error2」に「ログインしてください」と設定する。
+	header("Location: login.php");//⑦ログイン画面へ遷移する。
+	exit();
 }
 
 //⑧データベースへ接続し、接続情報を変数に保存する
+$dsn = 'mysql:host=localhost;dbname=phpbooks;';
+$user = 'root';
+$password = '';
+try{
+	$dbh = new PDO($dsn, $user, $password);
+} catch (PDOException $e){
+		echo 'データベースに接続できません！' . $e->getMessage();
+		exit();
 
 //⑨データベースで使用する文字コードを「UTF8」にする
-
+$dbn->set-charset('utf8');
+}
 //⑩書籍数をカウントするための変数を宣言し、値を0で初期化する
-
+$book_count = 0;
 //⑪POSTの「books」から値を取得し、変数に設定する。
 foreach(/* ⑪の処理を書く */){
 	/*
