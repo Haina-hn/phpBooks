@@ -32,7 +32,10 @@ if (/* ③の処理を書く */){
 //⑧POSTの「books」の値が空か判定する。空の場合はif文の中に入る。
 if(/* ⑧の処理を行う */){
 	//⑨SESSIONの「success」に「入荷する商品が選択されていません」と設定する。
+	$_SESSION['success'] = '入荷する商品が選択されていません';
 	//⑩在庫一覧画面へ遷移する。
+	header('Location: zaiko_ichiran.php');
+	exit;
 }
 
 function getId($id,$con){
@@ -41,8 +44,13 @@ function getId($id,$con){
 	 * その際にWHERE句でメソッドの引数の$idに一致する書籍のみ取得する。
 	 * SQLの実行結果を変数に保存する。
 	 */
-
+	$sql = "SELECT * FROM books WHERE id = $id";
+	$stmt = mysqli_prepare($con, $sql);
+	mysqli_stmt_bind_param($stmt, 'i', $id);
+	mysqli_stmt_execute($stmt);	
+	$result = mysqli_stmt_get_result($stmt);
 	//⑫実行した結果から1レコード取得し、returnで値を返す。
+	return mysqli_fetch_assoc($result);	
 }
 
 ?>
