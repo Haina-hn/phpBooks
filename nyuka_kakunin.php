@@ -83,11 +83,7 @@ foreach ($_POST['books'] as $booksId/* ⑪の処理を書く */) {
 	//⑰ ⑯で取得した書籍の情報の「stock」と、⑩の変数を元にPOSTの「stock」から値を取り出し、足した値を変数に保存する。
 	$something = isset($book['stock']) ? $book['stock'] + $_POST['stock'][$book_count] : 0;
 	//⑱ ⑰の値が100を超えているか判定する。超えていた場合はif文の中に入る。
-<<<<<<< HEAD
-	if ($something > 100/* ⑱の処理を書く */) {
-=======
 	if($something > 100/* ⑱の処理を書く */){
->>>>>>> 5d998cc4aa3c69690f60920115f16f4f9ce164ac
 		//⑲SESSIONの「error」に「最大在庫数を超える数は入力できません」と設定する。
 		$_SESSION['error'] = '最大在庫数を超える数は入力できません';
 		//⑳「include」を使用して「nyuka.php」を呼び出す。
