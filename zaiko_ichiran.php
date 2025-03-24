@@ -21,7 +21,7 @@ if (empty($_SESSION['login']) || $_SESSION['login'] === false) {
 	exit();
 }
 //⑤データベースへ接続し、接続情報を変数に保存する
-$dsn = 'mysql:host=localhost;dbname=phpbooks;charset=utf8';
+$dsn = 'mysql:host=localhost;dbname=phpbooks;';
 $user = 'root';
 $password = '';
 try{
@@ -29,8 +29,8 @@ try{
 } catch (PDOException $e){
 	echo 'データベースに接続できません！' . $e->getMessage();
 	exit;
+ $dbh->set_charset('utf8');
 }
-
 //⑥データベースで使用する文字コードを「UTF8」にする
 
 // $mysqli->set_charset("utf8");

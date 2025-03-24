@@ -23,14 +23,25 @@ if (session_status() == PHP_SESSION_NONE) {/* ①.の処理を行う */
 if (!isset($_SESSION['login']) || $_SESSION['login'] == false){/* ③の処理を書く */
 	$_SESSION['error2'] == 'ログインしてください';//④SESSIONの「error2」に「ログインしてください」と設定する。
 	//⑤ログイン画面へ遷移する。
+	header("Location: login.php");
+	exit();
 }
 
 //⑥データベースへ接続し、接続情報を変数に保存する
+$dsn = 'mysql:host=localhost;dbname=phpbooks;';
+$user = 'root';
+$password = '';
+try{
+	$dbh = new PDO($dsn, $user, $password);
+} catch (PDOException $e){
+	echo 'データベースに接続できません！' . $e->getMessage();
+	exit;
 
 //⑦データベースで使用する文字コードを「UTF8」にする
-
+$dbh->set_charset('utf8');
+}
 //⑧POSTの「books」の値が空か判定する。空の場合はif文の中に入る。
-if(/* ⑧の処理を行う */){
+if(empty($_POST['books'])/* ⑧の処理を行う */){
 	//⑨SESSIONの「success」に「入荷する商品が選択されていません」と設定する。
 	$_SESSION['success'] = '入荷する商品が選択されていません';
 	//⑩在庫一覧画面へ遷移する。
