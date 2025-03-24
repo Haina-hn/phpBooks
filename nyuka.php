@@ -49,19 +49,19 @@ if(empty($_POST['books'])/* ⑧の処理を行う */){
 	exit;
 }
 
-function getId($id,$con){
-	/* 
-	 * ⑪書籍を取得するSQLを作成する実行する。
-	 * その際にWHERE句でメソッドの引数の$idに一致する書籍のみ取得する。
-	 * SQLの実行結果を変数に保存する。
-	 */
-	$sql = "SELECT * FROM books WHERE id = $id";
-	$stmt = mysqli_prepare($con, $sql);
-	mysqli_stmt_bind_param($stmt, 'i', $id);
-	mysqli_stmt_execute($stmt);	
-	$result = mysqli_stmt_get_result($stmt);
-	//⑫実行した結果から1レコード取得し、returnで値を返す。
-	return mysqli_fetch_assoc($result);	
+function getId($id, $dbh) {
+    /* 
+     * ⑪書籍を取得するSQLを作成して実行する。
+     * その際にWHERE句でメソッドの引数の$idに一致する書籍のみ取得する。
+     * SQLの実行結果を変数に保存する。
+     */
+    $sql = "SELECT * FROM books WHERE id = :id";
+    $stmt = $dbh->prepare($sql); // PDOのprepareメソッドを使用
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT); // パラメータをバインド
+    $stmt->execute(); // クエリを実行
+
+    //⑫実行した結果から1レコード取得し、returnで値を返す。
+    return $stmt->fetch(PDO::FETCH_ASSOC); // 連想配列形式でデータを取得
 }
 
 ?>
