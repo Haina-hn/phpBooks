@@ -130,7 +130,7 @@ function getId($id, $dbh) {
 						<td><?php echo	$bookId['id'];/* ⑱ ⑯の戻り値からidを取り出し、表示する */?></td> 
 						<td><?php echo	$bookId['title'];/* ⑲ ⑯の戻り値からtitleを取り出し、表示する */?></td>
 						<td><?php echo	$bookId['author'];/* ⑳ ⑯の戻り値からauthorを取り出し、表示する */?></td>
-						<td><?php echo	$bookId['salesData'];/* ㉑ ⑯の戻り値からsalesDataを取り出し、表示する */?></td>
+						<td><?php echo	$bookId['salesDate'];/* ㉑ ⑯の戻り値からsalesDataを取り出し、表示する */?></td>
 						<td><?php echo	$bookId['price'];/* ㉒⑯の戻り値からpriceを取り出し、表示する */?></td>
 						<td><?php echo	$bookId['stock'];/* ㉓⑯の戻り値からstockを取り出し、表示する */?></td>
 						<td><input type='text' name='stock[]' size='5' maxlength='11' required></td>
