@@ -124,6 +124,7 @@ function getId($id,$con){
     					// ⑯「getId」関数を呼び出し、変数に戻り値を入れる。その際引数に⑮の処理で取得した値と⑥のDBの接続情報を渡す。
 						$bookId = getId($book, $dbh); 
 					?>
+						<!-- // ⑰以下の<tr><td>に⑯で取得した値を表示する。 -->
    					<input type="hidden" value="<?php echo htmlspecialchars($book['id']); ?>" name="books[]">
 					<tr>
 						<td><?php echo	/* ⑱ ⑯の戻り値からidを取り出し、表示する */;?></td>
