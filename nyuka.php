@@ -125,7 +125,7 @@ function getId($id, $dbh) {
 						$bookId = getId($book, $dbh); 
 					?>
 						<!-- // ⑰以下の<tr><td>に⑯で取得した値を表示する。 -->
-   					<input type="hidden" value="<?php echo htmlspecialchars($book['id']); ?>" name="books[]">
+   					<input type="hidden" value="<?php echo $bookId; ?>" name="books[]">
 					<tr>
 						<td><?php echo	/* ⑱ ⑯の戻り値からidを取り出し、表示する */;?></td>
 						<td><?php echo	/* ⑲ ⑯の戻り値からtitleを取り出し、表示する */;?></td>
