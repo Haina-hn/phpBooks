@@ -111,14 +111,14 @@ if (isset($_POST['add']) && $_POST['add'] === 'ok') {/* ㉓の処理を書く */
 		//㉗ ㉖で取得した書籍の情報の「stock」と、㉔の変数を元にPOSTの「stock」から値を取り出し、足した値を変数に保存する。
 		$newStock1 = isset($book1['stock']) ? $book1['stock'] + $_POST['stock'][$book_count] : 0;
 		//㉘「updateByid」関数を呼び出す。その際に引数に㉕の処理で取得した値と⑧のDBの接続情報と㉗で計算した値を渡す。
-		updateByid($booksId, $bdh, $newStock1);
+		updateByid($booksId, $dbh, $newStock1);
 		//㉙ ㉔で宣言した変数をインクリメントで値を1増やす。
 		$book_count++;
 	}
 
 	//㉚SESSIONの「success」に「入荷が完了しました」と設定する。
 	if (!empty($_SESSION['success'])) {
-		echo $_SESSION['success'][1]["入荷が完了しました。"];
+		echo $_SESSION['success'] = "入荷が完了しました。";
 		unset($_SESSION['success']);
 	}
 	//㉛「header」関数を使用して在庫一覧画面へ遷移する。
