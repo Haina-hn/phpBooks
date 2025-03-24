@@ -77,17 +77,21 @@ foreach($_POST['books'] as $booksId/* ⑪の処理を書く */){
 	}
 
 	//⑯「getByid」関数を呼び出し、変数に戻り値を入れる。その際引数に⑪の処理で取得した値と⑧のDBの接続情報を渡す。
-
+	$book = getByid($booksId,$dbh);
 	//⑰ ⑯で取得した書籍の情報の「stock」と、⑩の変数を元にPOSTの「stock」から値を取り出し、足した値を変数に保存する。
-
+	$newStock = $book['stock'] + $_POST['stock'][$book_count];
 	//⑱ ⑰の値が100を超えているか判定する。超えていた場合はif文の中に入る。
-	if(/* ⑱の処理を行う */){
+	if($newStock > 100/* ⑱の処理を書く */){
 		//⑲SESSIONの「error」に「最大在庫数を超える数は入力できません」と設定する。
+		$_SESSION['error'] = '最大在庫数を超える数は入力できません';
 		//⑳「include」を使用して「nyuka.php」を呼び出す。
+		include 'nyuka.php';
 		//㉑「exit」関数で処理を終了する。
+		exit();
 	}
 	
 	//㉒ ⑩で宣言した変数をインクリメントで値を1増やす。
+	$book_count++;
 }
 
 /*
@@ -100,13 +104,22 @@ if(isset($_POST['add']) && $_POST['add'] === 'ok' ){/* ㉓の処理を書く */
 	//㉕POSTの「books」から値を取得し、変数に設定する。
 	foreach($_POST['books'] as $value){/* ㉕の処理を書く */
 		//㉖「getByid」関数を呼び出し、変数に戻り値を入れる。その際引数に㉕の処理で取得した値と⑧のDBの接続情報を渡す。
+		$book = getByid($booksId, $dbh);
 		//㉗ ㉖で取得した書籍の情報の「stock」と、㉔の変数を元にPOSTの「stock」から値を取り出し、足した値を変数に保存する。
+		$newStock = $book['stock'] + $_POST['stock'][$book_count];
 		//㉘「updateByid」関数を呼び出す。その際に引数に㉕の処理で取得した値と⑧のDBの接続情報と㉗で計算した値を渡す。
+		updateByid($booksId, $bdh, $newStock);
 		//㉙ ㉔で宣言した変数をインクリメントで値を1増やす。
+		$book_count++;
 	}
 
 	//㉚SESSIONの「success」に「入荷が完了しました」と設定する。
+	if (!empty($_SESSION['success'])) {
+		echo $_SESSION['success'][1]["入荷が完了しました。"];
+		unset($_SESSION['success']); 
+	}
 	//㉛「header」関数を使用して在庫一覧画面へ遷移する。
+	header("Location: zaiko_ichiran.php");
 }
 ?>
 <!DOCTYPE html>
