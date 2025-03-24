@@ -120,22 +120,22 @@ function getId($id,$con){
 					/*
 					 * ⑮POSTの「books」から一つずつ値を取り出し、変数に保存する。
 					 */
-    				foreach($_POST['books'] as $book/* ⑮の処理を書く */){
+    				foreach(/* ⑮の処理を書く */){
     					// ⑯「getId」関数を呼び出し、変数に戻り値を入れる。その際引数に⑮の処理で取得した値と⑥のDBの接続情報を渡す。
 						$bookId = getId($book, $dbh); 
 					?>
 						<!-- // ⑰以下の<tr><td>に⑯で取得した値を表示する。 -->
    					<input type="hidden" value="<?php echo htmlspecialchars($book['id']); ?>" name="books[]">
 					<tr>
-						<td><?php echo	/* ⑱ ⑯の戻り値からidを取り出し、表示する */;?></td>
-						<td><?php echo	/* ⑲ ⑯の戻り値からtitleを取り出し、表示する */;?></td>
-						<td><?php echo	/* ⑳ ⑯の戻り値からauthorを取り出し、表示する */;?></td>
-						<td><?php echo	/* ㉑ ⑯の戻り値からsalesDateを取り出し、表示する */;?></td>
-						<td><?php echo	/* ㉒ ⑯の戻り値からpriceを取り出し、表示する */;?></td>
-						<td><?php echo	/* ㉓ ⑯の戻り値からstockを取り出し、表示する */;?></td>
+						<td><?php echo	$bookId['id'];/* ⑱ ⑯の戻り値からidを取り出し、表示する */?></td> 
+						<td><?php echo	$bookId['title'];/* ⑲ ⑯の戻り値からtitleを取り出し、表示する */?></td>
+						<td><?php echo	$bookId['author'];/* ⑳ ⑯の戻り値からauthorを取り出し、表示する */?></td>
+						<td><?php echo	$bookId['salesData'];/* ㉑ ⑯の戻り値からsalesDataを取り出し、表示する */?></td>
+						<td><?php echo	$bookId['price'];/* ㉒⑯の戻り値からpriceを取り出し、表示する */?></td>
+						<td><?php echo	$bookId['stock'];/* ㉓⑯の戻り値からstockを取り出し、表示する */?></td>
 						<td><input type='text' name='stock[]' size='5' maxlength='11' required></td>
 					</tr>
-					<?php
+					<?php 
 					 }
 					?>
 				</table>
