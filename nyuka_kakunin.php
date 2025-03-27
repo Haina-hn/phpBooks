@@ -105,8 +105,8 @@ if (isset($_POST['add']) && $_POST['add'] === 'ok') {
                 </table>
                 <div id="kakunin">
                     <p>上記の書籍を入荷します。<br>よろしいですか？</p>
-                    <button type="submit" name="add" value="ok">はい</button>
-                    <button type="submit" formaction="nyuka.php">いいえ</button>
+                    <button type="submit" id="message" name="add" value="ok">はい</button>
+                    <button type="submit" id="message" formaction="nyuka.php">いいえ</button>
                 </div>
             </div>
         </div>
