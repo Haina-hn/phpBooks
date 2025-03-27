@@ -151,7 +151,7 @@ if (isset($_POST['add']) && $_POST['add'] === 'ok') {/* ㉓の処理を書く */
 					<tbody>
 						<?php
 						//㉜書籍数をカウントするための変数を宣言し、値を0で初期化する。
-						$book_count = 1;
+						$book_count = 0;
 						//㉝POSTの「books」から値を取得し、変数に設定する。
 						foreach ($_POST['books'] as $booksId/* ㉝の処理を書く */) {
 							//㉞「getByid」関数を呼び出し、変数に戻り値を入れる。その際引数に㉜の処理で取得した値と⑧のDBの接続情報を渡す。
