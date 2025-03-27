@@ -13,7 +13,7 @@
  * ①session_status()の結果が「PHP_SESSION_NONE」と一致するか判定する。
  * 一致した場合はif文の中に入る。
  */
-if (session_start() == PHP_SESSION_NONE) {/* ①の処理を行う */
+if (session_status() == PHP_SESSION_NONE) {/* ①の処理を行う */
 	session_start();//②セッションを開始する
 }
 
@@ -27,16 +27,16 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] == false){/* ③の処理�
 }
 
 //⑥データベースへ接続し、接続情報を変数に保存する
-$dsn = 'mysql:host=localhost;dbname=phpbooks,charset=utf8;';
+//⑦データベースで使用する文字コードを「UTF8」にする
+$dsn = 'mysql:host=localhost;dbname=phpbooks;charset=utf8'; 
 $user = 'root';
 $password = '';
-try{
-	$dbh = new PDO($dsn, $user, $password);
-} catch (PDOException $e){
-	echo 'データベースに接続できません！' . $e->getMessage();
-	exit;
+try {
+    $dbh = new PDO($dsn, $user, $password);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die('データベースに接続できません！' . htmlspecialchars($e->getMessage()));
 }
-//⑦データベースで使用する文字コードを「UTF8」にする
 
 //⑧POSTの「books」の値が空か判定する。空の場合はif文の中に入る。
 if(/* ⑧の処理を行う */){
@@ -51,7 +51,6 @@ function getId($id,$con){
 	 * SQLの実行結果を変数に保存する。
 	 */
 
-	//⑫実行した結果から1レコード取得し、returnで値を返す。
 }
 ?>
 <!DOCTYPE html>
