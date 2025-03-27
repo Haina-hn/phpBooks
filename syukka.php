@@ -27,12 +27,14 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] == false){/* ③の処理�
 }
 
 //⑥データベースへ接続し、接続情報を変数に保存する
-$dsn = 'mysql:host=localhost;dbname=phpbooks,charset=utf8;';
+//⑦データベースで使用する文字コードを「UTF8」にする
+//⑥⑦を一緒に書きました
+$dsn = 'mysql:host=localhost;dbname=phpbooks;charset=utf8';
 $user = 'root';
 $password = '';
 try {
     $dbh = new PDO($dsn, $user, $password);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
 } catch (PDOException $e) {
     die('データベースに接続できません！' . htmlspecialchars($e->getMessage()));
 }
