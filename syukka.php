@@ -94,8 +94,10 @@ function getId($id,$dbh){
 		 * ⑬SESSIONの「error」にメッセージが設定されているかを判定する。
 		 * 設定されていた場合はif文の中に入る。
 		 */ 
-		if(/* ⑬の処理を書く */){
+		if(isset($_SESSION['error']) && !empty($_SESSION['error'])/* ⑬の処理を書く */){
 			//⑭SESSIONの「error」の中身を表示する。
+			echo htmlspecialchars($_SESSION['error']);
+            unset($_SESSION['error']);
 		}
 		?>
 		</div>
@@ -116,8 +118,9 @@ function getId($id,$dbh){
 				/*
 				 * ⑮POSTの「books」から一つずつ値を取り出し、変数に保存する。
 				 */
-				foreach(/* ⑮の処理を書く */){
+				foreach($_POST['books'] as $bookId/* ⑮の処理を書く */){
 					// ⑯「getId」関数を呼び出し、変数に戻り値を入れる。その際引数に⑮の処理で取得した値と⑥のDBの接続情報を渡す。
+					$book = getId($bookId, $dbh);
 				?>
 				<input type="hidden" value="<?= htmlspecialchars($bookId)/* ⑰ ⑯の戻り値からidを取り出し、設定する */ ?>" name="books[]">
 				<tr>
