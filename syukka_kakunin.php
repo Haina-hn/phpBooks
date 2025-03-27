@@ -148,12 +148,12 @@ if(isset($_POST['add']) && $_POST['add'] === 'ok'/* ㉓の処理を書く */){
 						$book = getByid($bookId,$dbConnection);
 						?>
 					<tr>
-						<td><?php htmlspecialchars($book['title'])	/* ㉟ ㉞で取得した書籍情報からtitleを表示する。 */?></td>
-						<td><?php htmlspecialchars($book['stock'])	/* ㊱ ㉞で取得した書籍情報からstockを表示する。 */?></td>
-						<td><?php htmlspecialchars($_POST['stock'][$index])	/* ㊲ POSTの「stock」に設定されている値を㉜の変数を使用して呼び出す。 */?></td>
+						<td><?= htmlspecialchars($book['title'])	/* ㉟ ㉞で取得した書籍情報からtitleを表示する。 */?></td>
+						<td><?= htmlspecialchars($book['stock'])	/* ㊱ ㉞で取得した書籍情報からstockを表示する。 */?></td>
+						<td><?= htmlspecialchars($_POST['stock'][$index])	/* ㊲ POSTの「stock」に設定されている値を㉜の変数を使用して呼び出す。 */?></td>
 					</tr>
-					<input type="hidden" name="books[]" value="<?php htmlspecialchars($bookId) /* ㊳ ㉝で取得した値を設定する */?>">
-					<input type="hidden" name="stock[]" value='<?php htmlspecialchars($_POST['stock'][$index]) /* ㊴「POSTの「stock」に設定されている値を㉜の変数を使用して設定する。 */?>'>
+					<input type="hidden" name="books[]" value="<?= htmlspecialchars($bookId) /* ㊳ ㉝で取得した値を設定する */?>">
+					<input type="hidden" name="stock[]" value="<?= htmlspecialchars($_POST['stock'][$index]) /* ㊴「POSTの「stock」に設定されている値を㉜の変数を使用して設定する。 */?>">
 					<?php
 						//㊵ ㉜で宣言した変数をインクリメントで値を1増やす。
 						$count++;
