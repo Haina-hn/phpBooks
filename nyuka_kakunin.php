@@ -155,10 +155,10 @@ if (isset($_POST['add']) && $_POST['add'] === 'ok') {/* ㉓の処理を書く */
 						//㉝POSTの「books」から値を取得し、変数に設定する。
 						foreach ($_POST['books'] as $booksId/* ㉝の処理を書く */) {
 							//㉞「getByid」関数を呼び出し、変数に戻り値を入れる。その際引数に㉜の処理で取得した値と⑧のDBの接続情報を渡す。
-							$book = getByid($booksId, $dbh);
+							$book = getByid($book_count, $dbh);
 						?>
 							<tr>
-								<td><?php echo htmlspecialchars($book['title'])/* ㉟ ㉞で取得した書籍情報からtitleを表示する。 */; ?></td>
+								<td><?php echo  htmlspecialchars($book['title']) /* ㉟ ㉞で取得した書籍情報からtitleを表示する。 */; ?></td>
 								<td><?php echo isset($book['stock'])? htmlspecialchars($book['stock']) : '0'/* ㊱ ㉞で取得した書籍情報からstockを表示する。 */; ?></td>
 								<td><?php echo htmlspecialchars($_POST['stock'][$book_count])/* ㊱ POSTの「stock」に設定されている値を㉜の変数を使用して呼び出す。 */; ?></td>
 							</tr>
