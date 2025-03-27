@@ -40,17 +40,26 @@ try {
 }
 
 //⑧POSTの「books」の値が空か判定する。空の場合はif文の中に入る。
-if(/* ⑧の処理を行う */){
+if($_POST['books']/* ⑧の処理を行う */){
 	//⑨SESSIONの「success」に「出荷する商品が選択されていません」と設定する。
+	$_SESSION['success'] = '出荷する商品が選択されていません';
 	//⑩在庫一覧画面へ遷移する。
+	header('Location: zaiko_ichiran.php');
+	exit();
 }
 
-function getId($id,$con){
+function getId($id,$dbh){
 	/* 
 	 * ⑪書籍を取得するSQLを作成する実行する。
 	 * その際にWHERE句でメソッドの引数の$idに一致する書籍のみ取得する。
 	 * SQLの実行結果を変数に保存する。
 	 */
+	$sql = "SELECT * FROM books WHERE id = :id";
+	$stmt = $dbh->prepare($sql);
+	$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+	$stmt->execute();
+	//⑫実行した結果から1レコード取得し、returnで値を返す。
+	return $stmt->fetch(PDO::FETCH_ASSOC);
 
 }
 ?>
