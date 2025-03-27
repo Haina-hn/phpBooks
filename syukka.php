@@ -27,8 +27,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] == false){/* ③の処理�
 }
 
 //⑥データベースへ接続し、接続情報を変数に保存する
-//⑦データベースで使用する文字コードを「UTF8」にする
-$dsn = 'mysql:host=localhost;dbname=phpbooks;charset=utf8'; 
+$dsn = 'mysql:host=localhost;dbname=phpbooks,charset=utf8;';
 $user = 'root';
 $password = '';
 try {
