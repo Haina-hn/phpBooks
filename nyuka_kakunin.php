@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 function fetchBookById($id, $dbConnection)
 {
     $query = "SELECT * FROM books WHERE id = :id";
@@ -9,7 +8,6 @@ function fetchBookById($id, $dbConnection)
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-
 function updateBookStock($id, $dbConnection, $newStock)
 {
     $query = "UPDATE books SET stock = :stock WHERE id = :id";
@@ -18,40 +16,34 @@ function updateBookStock($id, $dbConnection, $newStock)
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
 }
-
 if (!isset($_SESSION['login']) || $_SESSION['login'] === false) {
     $_SESSION['error2'] = "ログインしてください";
     header("Location: login.php");
     exit();
 }
-
 try {
     $dbConnection = new PDO('mysql:host=localhost;dbname=phpbooks;charset=utf8', 'root', '');
     $dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die('データベース接続失敗: ' . htmlspecialchars($e->getMessage()));
 }
-
 if (!isset($_POST['books'], $_POST['stock']) || !is_array($_POST['books']) || !is_array($_POST['stock'])) {
     $_SESSION['error'] = "不正なデータが送信されました";
     include "nyuka.php";
     exit();
 }
-
 foreach ($_POST['books'] as $index => $bookId) {
     if (!is_numeric($bookId) || !isset($_POST['stock'][$index]) || !is_numeric($_POST['stock'][$index])) {
         $_SESSION['error'] = "不正なデータが含まれています";
         include "nyuka.php";
         exit();
     }
-
     $book = fetchBookById($bookId, $dbConnection);
     if (!$book) {
         $_SESSION['error'] = "書籍情報が見つかりません (ID: $bookId)";
         include "nyuka.php";
         exit();
     }
-
     $newStock = $book['stock'] + $_POST['stock'][$index];
     if ($newStock > 100) {
         $_SESSION['error'] = "最大在庫数を超える数は入力できません (ID: $bookId)";
@@ -59,14 +51,12 @@ foreach ($_POST['books'] as $index => $bookId) {
         exit();
     }
 }
-
 if (isset($_POST['add']) && $_POST['add'] === 'ok') {
     foreach ($_POST['books'] as $index => $bookId) {
         $book = fetchBookById($bookId, $dbConnection);
         $newStock = $book['stock'] + $_POST['stock'][$index];
         updateBookStock($bookId, $dbConnection, $newStock);
     }
-
     $_SESSION['success'] = "入荷が完了しました";
     header("Location: zaiko_ichiran.php");
     exit();
@@ -96,7 +86,7 @@ if (isset($_POST['add']) && $_POST['add'] === 'ok') {
                     </thead>
                     <tbody>
                         <?php foreach ($_POST['books'] as $index => $bookId): ?>
-                            <?php 
+                            <?php
                                 $book = fetchBookById($bookId, $dbConnection);
                                 if (!$book) {
                                     echo '<tr><td colspan="3">データが見つかりません (ID: ' . htmlspecialchars($bookId) . ')</td></tr>';
