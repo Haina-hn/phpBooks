@@ -20,7 +20,7 @@ if (session_status() == PHP_SESSION_NONE) {/* ①の処理を行う */
 //③SESSIONの「login」フラグがfalseか判定する。「login」フラグがfalseの場合はif文の中に入る。
 if (!isset($_SESSION['login']) || $_SESSION['login'] == false){/* ③の処理を書く */
 	//④SESSIONの「error2」に「ログインしてください」と設定する。
-	$_SESSION['error2'] == 'ログインしてください';
+	$_SESSION['error2'] = 'ログインしてください';
 	//⑤ログイン画面へ遷移する。
 	header("Location: login.php");
 	exit();

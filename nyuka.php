@@ -69,7 +69,7 @@ function getId($id, $dbh) {
                             <th>書籍名</th>
                             <th>著者名</th>
                             <th>発売日</th>
-                            <th>金額(円)</th>
+                            <th>金額</th>
                             <th>在庫数</th>
                             <th>入荷数</th>
                         </tr>
@@ -78,7 +78,7 @@ function getId($id, $dbh) {
                     foreach ($_POST['books'] as $bookId) {
                         $book = getId($bookId, $dbh);
                         if (!$book) {
-                            echo '<tr><td colspan="7">書籍情報が見つかりません (ID: ' . htmlspecialchars($bookId) . ')</td></tr>';
+                            echo '<tr><td colspan="7">書籍情報が見つかりません ' . htmlspecialchars($bookId) . ')</td></tr>';
                             continue;
                         }
                     ?>

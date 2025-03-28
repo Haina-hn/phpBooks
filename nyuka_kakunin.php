@@ -34,19 +34,19 @@ if (!isset($_POST['books'], $_POST['stock']) || !is_array($_POST['books']) || !i
 }
 foreach ($_POST['books'] as $index => $bookId) {
     if (!is_numeric($bookId) || !isset($_POST['stock'][$index]) || !is_numeric($_POST['stock'][$index])) {
-        $_SESSION['error'] = "不正なデータが含まれています";
+        $_SESSION['error'] = "数値以外が入力されています";
         include "nyuka.php";
         exit();
     }
     $book = fetchBookById($bookId, $dbConnection);
     if (!$book) {
-        $_SESSION['error'] = "書籍情報が見つかりません (ID: $bookId)";
+        $_SESSION['error'] = "書籍情報が見つかりません";
         include "nyuka.php";
         exit();
     }
     $newStock = $book['stock'] + $_POST['stock'][$index];
     if ($newStock > 100) {
-        $_SESSION['error'] = "最大在庫数を超える数は入力できません (ID: $bookId)";
+        $_SESSION['error'] = "最大在庫数を超える数は入力できません";
         include "nyuka.php";
         exit();
     }
@@ -89,7 +89,7 @@ if (isset($_POST['add']) && $_POST['add'] === 'ok') {
                             <?php
                                 $book = fetchBookById($bookId, $dbConnection);
                                 if (!$book) {
-                                    echo '<tr><td colspan="3">データが見つかりません (ID: ' . htmlspecialchars($bookId) . ')</td></tr>';
+                                    echo '<tr><td colspan="3">データが見つかりません ' . htmlspecialchars($bookId) . ')</td></tr>';
                                     continue;
                                 }
                             ?>
